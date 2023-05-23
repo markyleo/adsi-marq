@@ -21,12 +21,12 @@ def twitter_keyword():
         data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : str(tweet.date) ,'content' : str(tweet.rawContent),'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
         if int(tweet.retweetCount) > int(threshold) :
             tweets.append(data_set)
-        if i > 100 :
+        if i > 300 :
             break
 
     #tweet_dfs = pd.DataFrame(tweets, columns=["twitter_id","display_name","date","content","username","like_count","retweet_count"])
     #tweet_df = json.dumps(tweets)
-    #print(tweet_dfs.to_json)
+    print(str(json.dumps(tweets)))
     return str(json.dumps(tweets))
 
 @app.route('/school/', methods=['GET'])
