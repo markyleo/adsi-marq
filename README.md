@@ -1,9 +1,12 @@
 # sns-twitter using SNScrape
 
 GET = keywords : string "keyword to be query" { xbox,python }
+
 GET = threshold : int " number of retweets to be fetched" { 2 }
+
 Return value : 
 
+```bash
 [ 
     {
         "id": 1660642960344530944, 
@@ -15,3 +18,4 @@ Return value :
         "retweet_count": 36
    }
 ]
+```
