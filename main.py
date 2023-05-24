@@ -29,22 +29,6 @@ def twitter_keyword():
     print(str(json.dumps(tweets)))
     return str(json.dumps(tweets))
 
-@app.route('/school/', methods=['GET'])
-def school_qry():
-    school_qry = str(request.args.get('school_id'))
-    
-    scraper = sntwitter.TwitterProfileScraper(str(""+school_qry+""))
-    tweets = []
-
-    for i, tweet in enumerate(scraper.get_items()):
-        data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : str(tweet.date) ,'content' : tweet.rawContent,'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
-        tweets.append(data_set)
-        if i > 100 :
-            break
-
-    #tweet_dfs = pd.DataFrame(tweets, columns=[,"content","username","like_count","retweet_count"])
-    tweet_df = json.dumps(tweets)
-    return tweet_df
 
 if __name__ == '__main__' : 
     app.run(port=7777)
