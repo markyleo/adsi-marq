@@ -5,6 +5,10 @@ import snscrape.modules.twitter as sntwitter
 
 app = Flask(__name__)
 
+@app.route('/')
+def hello_scrape():
+    return 'SNS-Twitter-Scrape'
+
 @app.route('/keywords/', methods=['GET'])
 def twitter_keyword():
     keyword_qry = str(request.args.get('keywords'))
@@ -31,4 +35,4 @@ def twitter_keyword():
 
 
 if __name__ == '__main__' : 
-    app.run(port=7777)
+    app.run()
