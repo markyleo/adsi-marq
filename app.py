@@ -1,6 +1,6 @@
 from flask import *
 #import pandas as pd
-import json
+#import json
 import snscrape.modules.twitter as sntwitter
 
 app = Flask(__name__)
@@ -12,8 +12,8 @@ def hello_scrape():
 @app.route('/keywords/', methods=['GET'])
 def twitter_keyword():
     keyword_qry = str(request.args.get('query'))
-    threshold = 1
-    if int(request.args.get('threshold')) > 1 :
+    threshold = 0
+    if int(request.args.get('threshold')) > 0 :
         threshold = int(request.args.get('threshold'))
 
     print(threshold) 
@@ -23,13 +23,13 @@ def twitter_keyword():
 
     for i, tweet in enumerate(scraper.get_items()):
         data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : str(tweet.date) ,'content' : str(tweet.rawContent),'media' : str(tweet.media),'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
-        if int(tweet.retweetCount) > int(threshold) :
+        if int(tweet.retweetCount) >= int(threshold) :
             tweets.append(data_set)
         if i > 200 :
             break
             
-    print(str(json.dumps(tweets)))
-    return str(json.dumps(tweets))
+    print(jsonify(tweets))
+    return jsonify(tweets)
 
 
 if __name__ == '__main__' : 
