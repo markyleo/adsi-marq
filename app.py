@@ -22,10 +22,10 @@ def twitter_keyword():
     tweets = []
 
     for i, tweet in enumerate(scraper.get_items()):
-        data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : str(tweet.date) ,'content' : str(tweet.rawContent),'media' : str(tweet.media,'username') : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
+        data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : str(tweet.date) ,'content' : str(tweet.rawContent),'media' : str(tweet.media),'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
         if int(tweet.retweetCount) > int(threshold) :
             tweets.append(data_set)
-        if i > 100 :
+        if i > 200 :
             break
             
     print(str(json.dumps(tweets)))
