@@ -1,4 +1,6 @@
-# sns-twitter using SNScrape
+# M.A.R.Q ( Multiple API Retrieval Query )
+
+Can fetch on Twitter/Facebook/Instagram
 
 GET = keywords : string "keyword to be query" { xbox,python }
 
