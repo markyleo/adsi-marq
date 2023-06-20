@@ -2,7 +2,7 @@
 
 Can fetch on Twitter/Facebook/Instagram
 
-GET = keywords : string "keyword to be query" { xbox,python }
+GET = query : string "keyword to be query" { xbox,python }
 
 GET = threshold : int " number of retweets to be fetched" { 2 }
 
