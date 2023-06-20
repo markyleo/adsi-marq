@@ -1,5 +1,5 @@
 from flask import *
-import pandas as pd
+#import pandas as pd
 import json
 import snscrape.modules.twitter as sntwitter
 
