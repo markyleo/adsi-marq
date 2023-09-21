@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_scrape():
-    return 'Twitter-Scraper'
+    return 'MARQ adsi twitter-scraper'
 
 @app.route('/keywords/', methods=['GET'], strict_slashes=False)
 def twitter_keyword():
@@ -21,7 +21,6 @@ def twitter_keyword():
     if int(request.args.get('threshold')) >= threshold :
         threshold = int(request.args.get('threshold'))
 
-    print(threshold) 
     tweets = []
     scraper = str("'"+keyword_qry+" min_retweets:"+str(threshold)+" since:"+today+"'")
 
@@ -43,7 +42,6 @@ def twitter_keyword():
         
     asyncio.run(exec(scraper,threshold))
 
-    print(jsonify(tweets))
     return jsonify(tweets)
 
 
