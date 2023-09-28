@@ -7,18 +7,6 @@ from contextlib import aclosing
 import json
 
 api = API()
-
-async def init_login():
-    file_path = "//wsl.localhost/Ubuntu/home/markyy/app/adsi-marq/accounts.json"
-
-    with open(file_path, 'r') as json_file:
-        accounts_data = json.load(json_file)
-
-    for item in accounts_data:
-        await api.pool.add_account(item["username"], item["password"], "_", "_")
-
-    await api.pool.login_all()
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -38,7 +26,6 @@ def twitter_keyword():
 
     async def exec(scraper):
         tweet_count = 0
-
         async with aclosing(api.search(scraper, limit=10)) as gen:
             async for tweet in gen:
                 tweet_count+=1
@@ -53,4 +40,5 @@ def twitter_keyword():
 
 
 if __name__ == '__main__' : 
-    app.run(asyncio.run(init_login()))
+    app.run(port=8000)
+    
