@@ -8,7 +8,8 @@ import json
 
 api = API()
 
-async def login_accounts():
+async def init_login():
+    # file_path = "//wsl.localhost/Ubuntu/home/markyy/app/adsi-marq/accounts.json"
     file_path = "./accounts.json"
 
     with open(file_path, 'r') as json_file:
@@ -17,11 +18,7 @@ async def login_accounts():
     for item in accounts_data:
         await api.pool.add_account(item["username"], item["password"], "_", "_")
 
-    await api.pool.login_all()
-
 app = Flask(__name__)
-
-asyncio.run(login_accounts())
 
 @app.route('/')
 def hello_scrape():
@@ -38,18 +35,14 @@ def twitter_keyword():
     tweets = []
     scraper = str("'"+keyword_qry+" min_retweets:"+str(threshold)+" since:"+today+"'")
 
-    async def exec(scraper,threshold):
+    async def exec(scraper):
         tweet_count = 0
 
-        async with aclosing(api.search(scraper, limit=10)) as gen:
-            async for tweet in gen:
-                tweet_count+=1
-                data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : tweet.date ,'content' : tweet.rawContent,'url' : tweet.url,'media' : tweet.media,'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
-                tweets.append(data_set)
-                if tweet_count > 9 :
-                    break
+        async for tweet in api.search(scraper):
+            data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : tweet.date ,'content' : tweet.rawContent,'url' : tweet.url,'media' : tweet.media,'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
+            tweets.append(data_set)
         
-    asyncio.run(exec(scraper,threshold))
+    asyncio.run(exec(scraper))
 
     return jsonify(tweets)
 
