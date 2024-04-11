@@ -1,3 +1,6 @@
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from flask import *
 #import pandas as pd
 #import json
@@ -32,6 +35,24 @@ def twitter_keyword():
             
     print(jsonify(tweets))
     return jsonify(tweets)
+
+def send_email(sender_email, receiver_email, subject, message)
+    # Set up the MIME
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
+
+    # Attach the message to the MIMEMultipart object
+    msg.attach(MIMEText(message, 'plain'))
+
+    # Connect to the SMTP server
+    with smtplib.SMTP('smtp.example.com', 587) as server:
+        server.starttls()  # Secure the connection
+        # Login to your account
+        server.login('your_email@example.com', 'your_password')
+        # Send the email
+        server.sendmail(sender_email, receiver_email, msg.as_string())
 
 
 if __name__ == '__main__' : 
