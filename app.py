@@ -1,16 +1,18 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import boto3
+from botocore.exceptions import ClientErrorfrom 
 from flask import *
 #import pandas as pd
 #import json
 from datetime import date
 import snscrape.modules.twitter as sntwitter
 
+
+
 app = Flask(__name__)
 
 @app.route('/')
 def hello_scrape():
+    send_email('Test Subject', 'Test Body', 'francis.borlas@adish.com.ph', 'francis.borlas.9398@gmail.com')
     return 'SNS-Twitter-Scrape'
 
 @app.route('/keywords/', methods=['GET'], strict_slashes=False)
@@ -36,23 +38,38 @@ def twitter_keyword():
     print(jsonify(tweets))
     return jsonify(tweets)
 
-def send_email(sender_email, receiver_email, subject, message)
-    # Set up the MIME
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-    msg['Subject'] = subject
+def send_email(subject, body_text, sender, recipient):
+    # Create a new SES client
+    ses_client = boto3.client('ses')
 
-    # Attach the message to the MIMEMultipart object
-    msg.attach(MIMEText(message, 'plain'))
-
-    # Connect to the SMTP server
-    with smtplib.SMTP('smtp.example.com', 587) as server:
-        server.starttls()  # Secure the connection
-        # Login to your account
-        server.login('your_email@example.com', 'your_password')
-        # Send the email
-        server.sendmail(sender_email, receiver_email, msg.as_string())
+    # Try to send the email
+    try:
+        # Provide the contents of the email
+        response = ses_client.send_email(
+            Destination={
+                'ToAddresses': [
+                    recipient,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Text': {
+                        'Charset': 'UTF-8',
+                        'Data': body_text,
+                    },
+                },
+                'Subject': {
+                    'Charset': 'UTF-8',
+                    'Data': subject,
+                },
+            },
+            Source=sender,
+        )
+    # Handle errors
+    except ClientError as e:
+        print("Error sending email:", e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:", response['MessageId'])
 
 
 if __name__ == '__main__' : 
