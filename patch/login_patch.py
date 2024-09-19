@@ -248,7 +248,7 @@ async def next_login_task(ctx: TaskCtx, rep: Response):
     return None
 
 
-async def login(acc: Account, cfg: LoginConfig | None = None) -> Account:
+async def login(acc: Account, cfg: LoginConfig | None = None, ct0: str | None = None) -> Account:
     log_id = f"{acc.username} - {acc.email}"
     if acc.active:
         logger.info(f"account already active {log_id}")
@@ -261,7 +261,6 @@ async def login(acc: Account, cfg: LoginConfig | None = None) -> Account:
     async with acc.make_client() as client:
         guest_token = await get_guest_token(client)
         client.headers["x-guest-token"] = guest_token
-        client.headers["x-client-transaction-id"] = "<a base64 string>"
 
         rep = await login_initiate(client)
         ctx = TaskCtx(client, acc, cfg, None, imap)
@@ -272,7 +271,7 @@ async def login(acc: Account, cfg: LoginConfig | None = None) -> Account:
 
         # assert "ct0" in client.cookies, "ct0 not in cookies (most likely ip ban)"
         # client.headers["x-csrf-token"] = client.cookies["ct0"]
-        client.headers["x-csrf-token"] = "<ct0 here>"
+        client.headers["x-csrf-token"] = ct0
         client.headers["x-twitter-auth-type"] = "OAuth2Session"
 
         acc.active = True

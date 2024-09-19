@@ -42,27 +42,22 @@ def twitter_keyword():
 
 @app.route('/search/', methods=['GET'], strict_slashes=False)
 def twitter_search():
-    keyword_qry = str(request.args.get('query'))
+    keyword_qry = int(request.args.get('query'))
     threshold = 1
     today = str(date.today())
     if int(request.args.get('threshold')) >= threshold :
         threshold = int(request.args.get('threshold'))
 
-    tweets = []
+    tweet = []
 
-    async def exec(scraper):
-        tweet_count = 0
+    async def exec():
+        tweet.append(await api.tweet_details(keyword_qry))
+    asyncio.run(exec())
 
-        async with aclosing(api.tweet_details(keyword_qry)) as gen:
-            async for tweet in gen:
-                print(tweet)
-                tweet_count+=1
-                data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : tweet.date ,'content' : tweet.rawContent,'url' : tweet.url,'media' : tweet.media,'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
-                tweets.append(data_set)
-
-    asyncio.run(exec(scraper))
-
-    return jsonify(tweets)
+    # for dic in tweet:
+    #     tweet_data_set = print(dic.url)
+ 
+    return jsonify(tweet)
 
 
 if __name__ == '__main__' : 
