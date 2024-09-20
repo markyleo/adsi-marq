@@ -269,10 +269,10 @@ async def login(acc: Account, cfg: LoginConfig | None = None, ct0: str | None = 
             if not rep:
                 break
 
-        # assert "ct0" in client.cookies, "ct0 not in cookies (most likely ip ban)"
-        # client.headers["x-csrf-token"] = client.cookies["ct0"]
+        assert "ct0" in client.cookies, "ct0 not in cookies (most likely ip ban)"
+        client.headers["x-csrf-token"] = client.cookies["ct0"]
         # client.headers["x-csrf-token"] = ct0
-        client.headers["x-csrf-token"] = "13ac03631f4342bcf1822d1dc2b74cb920de8e4e9e584fa944bdf4721dd81592a830dc9d23efcb88dd553a8337c54bab38da5179a2588dad24771e9bfd2b505da2d445a47a44cf6257fc8ebe93832096"
+        # client.headers["x-csrf-token"] = "95c4a564d5e51b384ea0e6c336cea73b9a706207a40ec071d5ff1540f8db92501382406cf64d3ebd0612f72a843ba06bf53d61829d22849c5a4a1612f24c05b6c8250e67137ff41b80f69de70b873b32"
         client.headers["x-twitter-auth-type"] = "OAuth2Session"
 
         acc.active = True
