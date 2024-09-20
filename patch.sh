@@ -17,9 +17,9 @@ ACCOUNTS_POOL_PATCH_FILE="$PATCH_DIR/accounts_pool_patch.py"
 DB_PATCH_FILE="$PATCH_DIR/db_patch.py"
 ACCOUNT_PATCH_FILE="$PATCH_DIR/account_patch.py"
 
-# if [ $# -eq 0 ]; then
-#     echo "Usage: $0 {login|accounts_pool|db|account|all}"
-# fi
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 {login|accounts_pool|db|account|all}"
+fi
 
 patch_login() {
     if [ ! -f "$LOGIN_PATCH_FILE" ]; then
@@ -109,31 +109,31 @@ patch_account() {
     fi
 }
 
-patch_login
-patch_accounts_pool
-patch_db
-patch_account
+# patch_login
+# patch_accounts_pool
+# patch_db
+# patch_account
 
-# case $1 in
-#     login)
-#         patch_login
-#         ;;
-#     accounts_pool)
-#         patch_accounts_pool
-#         ;;
-#     db)
-#         patch_db
-#         ;;
-#     account)
-#         patch_account
-#         ;;
-#     all)
-#         patch_login
-#         patch_accounts_pool
-#         patch_db
-#         patch_account
-#         ;;
-#     *)
-#         echo "Invalid option. Use {login|accounts_pool|db|account|all}"
-#         ;;
-# esac
+case $1 in
+    login)
+        patch_login
+        ;;
+    accounts_pool)
+        patch_accounts_pool
+        ;;
+    db)
+        patch_db
+        ;;
+    account)
+        patch_account
+        ;;
+    all)
+        patch_login
+        patch_accounts_pool
+        patch_db
+        patch_account
+        ;;
+    *)
+        echo "Invalid option. Use {login|accounts_pool|db|account|all}"
+        ;;
+esac
