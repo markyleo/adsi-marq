@@ -40,7 +40,6 @@ async def iterate_json(data, api):
                 addition = f"{value}"
                 proper += addition
                 await api.pool.add_account(proper.split(":")[0], proper.split(":")[1], proper.split(":")[2], proper.split(":")[3], mfa_code=proper.split(":")[4])
-                print(proper)
             if isinstance(value, (dict, list)):
                 await iterate_json(value, api)
     elif isinstance(data, list):
@@ -50,10 +49,11 @@ async def iterate_json(data, api):
 
 async def main():
     if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
-        print("========================= The file accounts.db exist =========================")
+        print("========================= The file accounts.db exists. Deleting... =========================")
         os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
     else:
         print("========================= The file accounts.db does not exist =========================")
+
     file_path = '/home/ubuntu/app/adsi-marq/accounts.json'  # Replace with the path to your JSON file
     json_data = read_json_file(file_path)
     
