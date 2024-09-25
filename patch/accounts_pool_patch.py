@@ -105,8 +105,8 @@ class AccountsPool:
             temp=temp
         )
 
-        # if "ct0" in account.cookies:
-        #     account.active = True
+        if "ct0" in account.cookies:
+            account.active = True
 
         await self.save(account)
         logger.info(f"Account {username} added successfully (active={account.active})")
