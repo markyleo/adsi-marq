@@ -18,6 +18,8 @@ os.environ["SMTP_USERNAME"] = "AKIASNNFRYSNJDMCIF5W"
 os.environ["SMTP_PASSWORD"] = "BGwhDgbH8Xx11HpqfxDwitmge10cVutt0Ply0BWvUlwG"
 os.environ["SMTP_ENDPOINT"] = "email-smtp.ap-northeast-1.amazonaws.com"
 
+api = API()
+
 def read_json_file(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -29,7 +31,7 @@ def read_json_file(file_path):
         print("Error: Failed to decode JSON from the file.")
     return None
 
-async def iterate_json(data, api):
+async def iterate_json(data):
     proper=""
     if isinstance(data, dict):
         for key, value in data.items():
@@ -41,26 +43,19 @@ async def iterate_json(data, api):
                 proper += addition
                 await api.pool.add_account(proper.split(":")[0], proper.split(":")[1], proper.split(":")[2], proper.split(":")[3], mfa_code=proper.split(":")[4])
             if isinstance(value, (dict, list)):
-                await iterate_json(value, api)
+                await iterate_json(value)
     elif isinstance(data, list):
         for index, item in enumerate(data):
             if isinstance(item, (dict, list)):
-                await iterate_json(item, api)
+                await iterate_json(item)
 
 async def main():
-    if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
-        print("========================= The file accounts.db exists. Deleting... =========================")
-        os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
-    else:
-        print("========================= The file accounts.db does not exist =========================")
-
-    file_path = '/home/ubuntu/app/adsi-marq/accounts.json'  # Replace with the path to your JSON file
+    await delete_file("/home/ubuntu/app/adsi-marq/accounts.db")
+    file_path = "/home/ubuntu/app/adsi-marq/accounts.json"
     json_data = read_json_file(file_path)
     
-    api = API()
-
     if json_data:
-        await iterate_json(json_data, api)
+        await iterate_json(json_data)
 
     counter = 0
     while counter < 10:
@@ -71,7 +66,7 @@ async def main():
         if inactive < 1:
             counter = 11
         else:
-            time.sleep(15)
+            await asyncio.sleep(15)
             counter += 1
     
     print("========================= Retries executed =========================")
@@ -86,6 +81,13 @@ async def main():
     )
     
     del os.environ["TWS_PROXY"]
+
+async def delete_file(file_path):
+    if os.path.exists(file_path):
+        print("========================= The file accounts.db exists. Deleting... =========================")
+        await asyncio.to_thread(os.remove, file_path)
+    else:
+        print("========================= The file accounts.db does not exist =========================")
 
 def send_email_smtp(sender_email, receiver_email, subject, body, file_path=None):
     # Create a multipart message and set headers
