@@ -14,10 +14,6 @@ from email.mime.multipart import MIMEMultipart
 os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4@geo.iproyal.com:12321" # randomize per request
 # os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4_session-eGfaqqcM_lifetime-30s@geo.iproyal.com:12321" # sticky IP
 
-os.environ["SMTP_USERNAME"] = "AKIASNNFRYSNJDMCIF5W"
-os.environ["SMTP_PASSWORD"] = "BGwhDgbH8Xx11HpqfxDwitmge10cVutt0Ply0BWvUlwG"
-os.environ["SMTP_ENDPOINT"] = "email-smtp.ap-northeast-1.amazonaws.com"
-
 api = API()
 
 def read_json_file(file_path):
@@ -90,38 +86,30 @@ async def delete_file(file_path):
         print("========================= The file accounts.db does not exist =========================")
 
 def send_email_smtp(sender_email, receiver_email, subject, body, file_path=None):
-    # Create a multipart message and set headers
     message = MIMEMultipart()
     message['From'] = sender_email
     message['To'] = receiver_email
     message['Subject'] = subject
 
-    # Add body to email
     message.attach(MIMEText(body, 'plain'))
 
-    # Attach the file, if a file path is provided
     if file_path:
         try:
             with open(file_path, 'rb') as attachment:
-                # Create a MIMEBase instance and set the payload as the attachment
                 part = MIMEBase('application', 'octet-stream')
                 part.set_payload(attachment.read())
             
-            # Encode the payload using base64
             encoders.encode_base64(part)
 
-            # Add header to the attachment
             part.add_header(
                 'Content-Disposition',
                 f'attachment; filename={os.path.basename(file_path)}',
             )
 
-            # Attach the file to the message
             message.attach(part)
         except Exception as e:
             print(f"Failed to attach the file. Error: {str(e)}")
 
-    # Create SMTP session for sending the mail
     try:
         username = os.environ["SMTP_USERNAME"]
         password = os.environ["SMTP_PASSWORD"]
@@ -136,7 +124,7 @@ def send_email_smtp(sender_email, receiver_email, subject, body, file_path=None)
     except Exception as e:
         print(f'Failed to send email. Error: {str(e)}')
     finally:
-        server.quit()  # Quit the SMTP session
+        server.quit()
 
 if __name__ == "__main__":
     asyncio.run(main())
