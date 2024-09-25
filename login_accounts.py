@@ -49,6 +49,11 @@ async def iterate_json(data, api):
                 await iterate_json(item, api)
 
 async def main():
+    if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
+        print("========================= The file accounts.db exist =========================")
+        os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
+    else:
+        print("========================= The file accounts.db does not exist =========================")
     file_path = '/home/ubuntu/app/adsi-marq/accounts.json'  # Replace with the path to your JSON file
     json_data = read_json_file(file_path)
     
