@@ -50,16 +50,17 @@ async def main():
 
     counter = 0
     while counter < 10:
-        print(f"Login all accounts retries: {counter + 1}")
-        # await api.pool.login_all()
+        print(f"========================= Login all accounts retries: {counter + 1} =========================")
+        await api.pool.login_all()
         stats = await api.pool.stats()
         inactive = stats["inactive"]
         if inactive < 1:
-            counter = 5
+            counter = 11
         else:
             time.sleep(30)
             counter += 1
     
+    print("========================= Retries executed =========================")
     print(stats)
     del os.environ["TWS_PROXY"]
 
