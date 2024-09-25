@@ -46,8 +46,11 @@ async def iterate_json(data):
                 await iterate_json(item)
 
 async def main():
-    await delete_file("/home/ubuntu/app/adsi-marq/accounts.db")
+    # delete_file_sync("/home/ubuntu/app/adsi-marq/accounts.db")
     file_path = "/home/ubuntu/app/adsi-marq/accounts.json"
+    # delete_file_sync("/Users/francisadish/Desktop/code/adsi-marq/accounts.db")
+    # file_path = "/Users/francisadish/Desktop/code/adsi-marq/accounts.json"
+    
     json_data = read_json_file(file_path)
     
     if json_data:
@@ -62,7 +65,7 @@ async def main():
         if inactive < 1:
             counter = 11
         else:
-            await asyncio.sleep(15)
+            time.sleep(15)
             counter += 1
     
     print("========================= Retries executed =========================")
@@ -78,10 +81,10 @@ async def main():
     
     del os.environ["TWS_PROXY"]
 
-async def delete_file(file_path):
+def delete_file_sync(file_path):
     if os.path.exists(file_path):
         print("========================= The file accounts.db exists. Deleting... =========================")
-        await asyncio.to_thread(os.remove, file_path)
+        os.remove(file_path)
     else:
         print("========================= The file accounts.db does not exist =========================")
 
