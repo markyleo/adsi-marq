@@ -6,4 +6,4 @@ if [ -f "/home/ubuntu/app/adsi-marq/accounts.db" ]; then
 fi
 
 # Run the Python script
-/home/ubuntu/app/adsi-marq/venv/bin/python3 /home/ubuntu/app/adsi-marq/login_accounts.py > /home/ubuntu/app/adsi-marq/test_cron_log.txt 2>&1
+/home/ubuntu/app/adsi-marq/venv/bin/python3 /home/ubuntu/app/adsi-marq/login_accounts.py
