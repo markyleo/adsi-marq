@@ -11,7 +11,11 @@ from email.mime.base import MIMEBase
 from email import encoders
 from email.mime.multipart import MIMEMultipart
 
-delete_file_sync("/home/ubuntu/app/adsi-marq/accounts.db")
+if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
+    print("========================= The file accounts.db exists. Deleting... =========================")
+    os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
+else:
+    print("========================= The file accounts.db does not exist =========================")
 
 os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4@geo.iproyal.com:12321" # randomize per request
 # os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4_session-eGfaqqcM_lifetime-30s@geo.iproyal.com:12321" # sticky IP
@@ -82,12 +86,12 @@ async def main():
     
     del os.environ["TWS_PROXY"]
 
-def delete_file_sync(file_path):
-    if os.path.exists(file_path):
-        print("========================= The file accounts.db exists. Deleting... =========================")
-        os.remove(file_path)
-    else:
-        print("========================= The file accounts.db does not exist =========================")
+# def delete_file_sync(file_path):
+#     if os.path.exists(file_path):
+#         print("========================= The file accounts.db exists. Deleting... =========================")
+#         os.remove(file_path)
+#     else:
+#         print("========================= The file accounts.db does not exist =========================")
 
 def send_email_smtp(sender_email, receiver_email, subject, body, file_path=None):
     message = MIMEMultipart()
