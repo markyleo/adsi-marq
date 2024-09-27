@@ -11,6 +11,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 from email.mime.multipart import MIMEMultipart
 
+delete_file_sync("/home/ubuntu/app/adsi-marq/accounts.db")
+
 os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4@geo.iproyal.com:12321" # randomize per request
 # os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4_session-eGfaqqcM_lifetime-30s@geo.iproyal.com:12321" # sticky IP
 
@@ -46,7 +48,6 @@ async def iterate_json(data):
                 await iterate_json(item)
 
 async def main():
-    # delete_file_sync("/home/ubuntu/app/adsi-marq/accounts.db")
     file_path = "/home/ubuntu/app/adsi-marq/accounts.json"
     # delete_file_sync("/Users/francisadish/Desktop/code/adsi-marq/accounts.db")
     # file_path = "/Users/francisadish/Desktop/code/adsi-marq/accounts.json"
