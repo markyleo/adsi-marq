@@ -20,7 +20,7 @@ else:
 os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4@geo.iproyal.com:12321" # randomize per request
 # os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4_session-eGfaqqcM_lifetime-30s@geo.iproyal.com:12321" # sticky IP
 
-api = API()
+api = API("/home/ubuntu/app/adsi-marq/accounts.db")
 
 def read_json_file(file_path):
     try:
