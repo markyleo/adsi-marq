@@ -12,7 +12,6 @@ from email import encoders
 from email.mime.multipart import MIMEMultipart
 
 if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
-    print("========================= The file accounts.db exists. Deleting... =========================")
     os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
 else:
     print("========================= The file accounts.db does not exist =========================")
