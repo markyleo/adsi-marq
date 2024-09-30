@@ -40,6 +40,8 @@ sh patch.sh accounts_pool
 
 ## Operation Notes
 * Logging in accounts uses Proxy Service to bypass IP Ban error. Not using Proxy will lessen the probability of successful login. I availed the proxy from [IPRoyal](https://iproyal.com). You can use any Proxy Providers you prefer.  
-* You acquire accounts for a minimal cost from [Twaccs](https://twaccs.com).  
+* You can acquire accounts for a minimal cost from [Twaccs](https://twaccs.com).
 * Note that it would be better to have surplus of accounts from Twaccs since they sometimes run out of stock.  
+* Login script will run via crontab every 7am, 11am, 3pm, 7pm, 11pm, 3am.
+* Script execution logs will be emailed to whomever is set inside the `login_accounts.py` line 78.
 

@@ -17,7 +17,6 @@ else:
     print("========================= The file accounts.db does not exist =========================")
 
 os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4@geo.iproyal.com:12321" # randomize per request
-# os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4_session-eGfaqqcM_lifetime-30s@geo.iproyal.com:12321" # sticky IP
 
 api = API("/home/ubuntu/app/adsi-marq/accounts.db")
 
@@ -52,7 +51,6 @@ async def iterate_json(data):
 
 async def main():
     file_path = "/home/ubuntu/app/adsi-marq/accounts.json"
-    # delete_file_sync("/Users/francisadish/Desktop/code/adsi-marq/accounts.db")
     # file_path = "/Users/francisadish/Desktop/code/adsi-marq/accounts.json"
     
     json_data = read_json_file(file_path)
@@ -84,13 +82,6 @@ async def main():
     )
     
     del os.environ["TWS_PROXY"]
-
-# def delete_file_sync(file_path):
-#     if os.path.exists(file_path):
-#         print("========================= The file accounts.db exists. Deleting... =========================")
-#         os.remove(file_path)
-#     else:
-#         print("========================= The file accounts.db does not exist =========================")
 
 def send_email_smtp(sender_email, receiver_email, subject, body, file_path=None):
     message = MIMEMultipart()
