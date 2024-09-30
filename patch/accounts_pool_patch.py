@@ -81,7 +81,6 @@ class AccountsPool:
         proxy: str | None = None,
         cookies: str | None = None,
         mfa_code: str | None = None,
-        temp: str | None = None,
     ):
         qs = "SELECT * FROM accounts WHERE username = :username"
         rs = await fetchone(self._db_file, qs, {"username": username})
@@ -102,7 +101,6 @@ class AccountsPool:
             cookies=parse_cookies(cookies) if cookies else {},
             proxy=proxy,
             mfa_code=mfa_code,
-            temp=temp
         )
 
         if "ct0" in account.cookies:
@@ -154,9 +152,9 @@ class AccountsPool:
         """
         await execute(self._db_file, qs, data)
 
-    async def login(self, account: Account, ct0: str | None = None):
+    async def login(self, account: Account):
         try:
-            await login(account, cfg=self._login_config, ct0=ct0)
+            await login(account, cfg=self._login_config)
             logger.info(f"Logged in to {account.username} successfully")
             return True
         except HTTPStatusError as e:
@@ -171,8 +169,7 @@ class AccountsPool:
 
     async def login_all(self, usernames: list[str] | None = None):
         if usernames is None:
-            # qs = "SELECT * FROM accounts WHERE active = false AND error_msg IS NULL"
-            qs = "SELECT * FROM accounts WHERE active = false"
+            qs = "SELECT * FROM accounts WHERE active = false AND error_msg IS NULL"
         else:
             us = ",".join([f'"{x}"' for x in usernames])
             qs = f"SELECT * FROM accounts WHERE username IN ({us})"
@@ -184,7 +181,7 @@ class AccountsPool:
         counter = {"total": len(accounts), "success": 0, "failed": 0}
         for i, x in enumerate(accounts, start=1):
             logger.info(f"[{i}/{len(accounts)}] Logging in {x.username} - {x.email}")
-            status = await self.login(x, ct0=x.temp)
+            status = await self.login(x)
             counter["success" if status else "failed"] += 1
         return counter
 

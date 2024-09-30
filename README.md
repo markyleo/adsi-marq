@@ -23,3 +23,23 @@ Return value :
    }
 ]
 ```
+
+## Setup  
+```
+python3.10 -m venv venv  
+source venv/bin/activate  
+pip3 install -r requirements.txt
+sh patch.sh accounts_pool  
+```
+
+## X Accounts Login Steps
+1. Create `accounts.json` file on project root. You can see the data format in the existing `accounts.json` file.  
+2. Run `python3 login_accounts.py`  
+3. Run `twscrape accounts` or `twscrape stats` to check accounts status  
+4. Run `twscrape search "elon mask lang:es" --limit=5` to check if the scraper can fetch data  
+
+## Operation Notes
+* Logging in accounts uses Proxy Service to bypass IP Ban error. Not using Proxy will lessen the probability of successful login. I availed the proxy from [IPRoyal](https://iproyal.com). You can use any Proxy Providers you prefer.  
+* You acquire accounts for a minimal cost from [Twaccs](https://twaccs.com).  
+* Note that it would be better to have surplus of accounts from Twaccs since they sometimes run out of stock.  
+
