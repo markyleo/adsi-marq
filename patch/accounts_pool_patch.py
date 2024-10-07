@@ -167,6 +167,24 @@ class AccountsPool:
         finally:
             await self.save(account)
 
+    # async def login_all(self, usernames: list[str] | None = None):
+    #     if usernames is None:
+    #         qs = "SELECT * FROM accounts WHERE active = false AND error_msg IS NULL"
+    #     else:
+    #         us = ",".join([f'"{x}"' for x in usernames])
+    #         qs = f"SELECT * FROM accounts WHERE username IN ({us})"
+
+    #     rs = await fetchall(self._db_file, qs)
+    #     accounts = [Account.from_rs(rs) for rs in rs]
+    #     # await asyncio.gather(*[login(x) for x in self.accounts])
+
+    #     counter = {"total": len(accounts), "success": 0, "failed": 0}
+    #     for i, x in enumerate(accounts, start=1):
+    #         logger.info(f"[{i}/{len(accounts)}] Logging in {x.username} - {x.email}")
+    #         status = await self.login(x)
+    #         counter["success" if status else "failed"] += 1
+    #     return counter
+    
     async def login_all(self, usernames: list[str] | None = None):
         if usernames is None:
             qs = "SELECT * FROM accounts WHERE active = false AND error_msg IS NULL"
@@ -176,13 +194,22 @@ class AccountsPool:
 
         rs = await fetchall(self._db_file, qs)
         accounts = [Account.from_rs(rs) for rs in rs]
-        # await asyncio.gather(*[login(x) for x in self.accounts])
-
+        
         counter = {"total": len(accounts), "success": 0, "failed": 0}
+
         for i, x in enumerate(accounts, start=1):
             logger.info(f"[{i}/{len(accounts)}] Logging in {x.username} - {x.email}")
-            status = await self.login(x)
-            counter["success" if status else "failed"] += 1
+            
+            for attempt in range(5):  # Retry up to 5 times
+                status = await self.login(x)
+                if status:  # If login is successful, break out of retry loop
+                    counter["success"] += 1
+                    break
+                else:
+                    logger.warning(f"Login failed for {x.username} - Attempt {attempt + 1}/5")
+                    if attempt == 4:  # After 5th attempt, consider it a failure
+                        counter["failed"] += 1
+
         return counter
 
     async def relogin(self, usernames: str | list[str]):
