@@ -11,10 +11,10 @@ from email.mime.base import MIMEBase
 from email import encoders
 from email.mime.multipart import MIMEMultipart
 
-if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
-    os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
-else:
-    print("========================= The file accounts.db does not exist =========================")
+# if os.path.exists("/home/ubuntu/app/adsi-marq/accounts.db"):
+#     os.remove("/home/ubuntu/app/adsi-marq/accounts.db")
+# else:
+#     print("========================= The file accounts.db does not exist =========================")
 
 os.environ["TWS_PROXY"] = "http://IbDxpBQwzg6vkEvu:8fsjGZeNV2YoDtY4@geo.iproyal.com:12321" # randomize per request
 
