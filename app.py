@@ -4,6 +4,7 @@ import asyncio
 from twscrape import API, gather
 from twscrape.logger import set_log_level
 from contextlib import aclosing
+from asgiref.wsgi import WsgiToAsgi
 import json
 
 api = API()
@@ -30,10 +31,20 @@ async def twitter_keyword():
 
         async with aclosing(api.search(scraper, limit=5)) as gen:
             async for tweet in gen:
-                tweet_count+=1
-                data_set = {'id': tweet.id, 'user' : tweet.user.displayname, 'date' : tweet.date ,'content' : tweet.rawContent,'url' : tweet.url,'media' : tweet.media,'username' : tweet.user.username, 'like_count' : tweet.likeCount, 'retweet_count' : tweet.retweetCount}
+                tweet_count += 1
+                data_set = {
+                    'id': tweet.id,
+                    'user': tweet.user.displayname,
+                    'date': tweet.date,
+                    'content': tweet.rawContent,
+                    'url': tweet.url,
+                    'media': tweet.media,
+                    'username': tweet.user.username,
+                    'like_count': tweet.likeCount,
+                    'retweet_count': tweet.retweetCount
+                }
                 tweets.append(data_set)
-                if tweet_count > 4 :
+                if tweet_count > 4:
                     break
 
     await exec(scraper)
@@ -55,10 +66,9 @@ async def twitter_search():
     
     await exec()
 
-    # for dic in tweet:
-    #     tweet_data_set = print(dic.url)
- 
     return jsonify(tweet)
+
+asgi_app = WsgiToAsgi(app)
 
 if __name__ == '__main__':
     app.run(port=8000)
