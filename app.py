@@ -14,7 +14,7 @@ def hello_scrape():
     return 'MARQ adsi twitter-scraper'
 
 @app.route('/keywords/', methods=['GET'], strict_slashes=False)
-def twitter_keyword():
+async def twitter_keyword():
     keyword_qry = str(request.args.get('query'))
     threshold = 1
     today = str(date.today())
@@ -36,12 +36,12 @@ def twitter_keyword():
                 if tweet_count > 4 :
                     break
 
-    asyncio.run(exec(scraper))
+    await exec(scraper)
 
     return jsonify(tweets)
 
 @app.route('/search/', methods=['GET'], strict_slashes=False)
-def twitter_search():
+async def twitter_search():
     keyword_qry = int(request.args.get('query'))
     threshold = 1
     today = str(date.today())
@@ -52,13 +52,13 @@ def twitter_search():
 
     async def exec():
         tweet.append(await api.tweet_details(keyword_qry))
-    asyncio.run(exec())
+    
+    await exec()
 
     # for dic in tweet:
     #     tweet_data_set = print(dic.url)
  
     return jsonify(tweet)
 
-
-if __name__ == '__main__' : 
+if __name__ == '__main__':
     app.run(port=8000)
