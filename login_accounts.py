@@ -50,8 +50,9 @@ async def iterate_json(data):
                 await iterate_json(item)
 
 async def main():
+    await api.pool.delete_inactive()
+
     file_path = "/home/ubuntu/app/adsi-marq/accounts.json"
-    # file_path = "/Users/francisadish/Desktop/code/adsi-marq/accounts.json"
     
     json_data = read_json_file(file_path)
     
