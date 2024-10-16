@@ -24,8 +24,9 @@ async def twitter_keyword():
         threshold = int(request.args.get('threshold'))
 
     tweets = []
-    scraper = str("'"+keyword_qry+" min_retweets:"+str(threshold)+" since:"+today+"' lang:ja")
-
+    scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja since:{today}'
+    print('========= Query =========')
+    print(scraper)
     async def exec(scraper):
         tweet_count = 0
 
