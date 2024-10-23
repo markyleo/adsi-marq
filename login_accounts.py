@@ -60,7 +60,7 @@ async def main():
         await iterate_json(json_data)
 
     counter = 0
-    while counter < 3:
+    while counter < 2:
         print(f"========================= Login all accounts retries: {counter + 1} =========================")
         await api.pool.login_all()
         stats = await api.pool.stats()
@@ -68,7 +68,7 @@ async def main():
         if inactive < 1:
             counter = 11
         else:
-            time.sleep(15)
+            time.sleep(10)
             counter += 1
     
     print("========================= Retries executed =========================")

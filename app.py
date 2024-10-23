@@ -5,6 +5,7 @@ from twscrape import API, gather
 from twscrape.logger import set_log_level
 from contextlib import aclosing
 from asgiref.wsgi import WsgiToAsgi
+from twitter_search_validator import TwitterSearchValidator
 import json
 
 api = API()
@@ -25,8 +26,8 @@ async def twitter_keyword():
 
     tweets = []
     scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja since:{today}'
-    print('========= Query =========')
-    print(scraper)
+    # scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja'
+
     async def exec(scraper):
         tweet_count = 0
 
@@ -42,7 +43,9 @@ async def twitter_keyword():
                     'media': tweet.media,
                     'username': tweet.user.username,
                     'like_count': tweet.likeCount,
-                    'retweet_count': tweet.retweetCount
+                    'retweet_count': tweet.retweetCount,
+                    'inReplyToUsername': getattr(tweet.inReplyToUser, 'username', None),
+                    'mentions': [user.username for user in tweet.mentionedUsers]
                 }
                 tweets.append(data_set)
                 if tweet_count > 4:
@@ -50,7 +53,17 @@ async def twitter_keyword():
 
     await exec(scraper)
 
-    return jsonify(tweets)
+    validator = TwitterSearchValidator(keyword_qry)
+
+    valid_posts = []
+
+    for post in tweets:
+        is_valid = validator.validate_post(post)
+        
+        if is_valid:
+            valid_posts.append(post)
+
+    return jsonify(valid_posts)
 
 @app.route('/search/', methods=['GET'], strict_slashes=False)
 async def twitter_search():
