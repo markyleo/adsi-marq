@@ -4,3 +4,4 @@ venv
 local_utils
 test_cron_log.txt
 *_local.py
+*_local.json
