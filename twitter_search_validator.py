@@ -10,51 +10,33 @@ class TwitterSearchValidator:
         Parses the search query and returns a structured representation of operators.
         Handles AND, OR, NOT operators, exact phrases, hashtags, accounts, and mentions.
         """
-        # Regular expressions to identify keywords, phrases, operators, and accounts
         exact_phrases = re.findall(r'\"([^\"]+)\"', query)  # Matches exact phrases
         or_blocks = re.findall(r'\((.*?)\)', query)  # Matches content inside OR blocks (parentheses)
         hashtags = re.findall(r'#(\w+)', query)  # Matches hashtags
-        exclude_keywords = re.findall(r'-\w+', query)  # Matches excluded keywords (e.g., -word)
+        exclude_keywords = re.findall(r'-\"([^\"]+)\"|-([\w\u4E00-\u9FFF]+)', query)  # Matches excluded keywords (e.g., -"word" or -word)
         
-        # Matches accounts from which tweets come from (converted to lower case)
+        # Flatten exclude_keywords to a single list
+        exclude_keywords = [kw for sublist in exclude_keywords for kw in sublist if kw]
+
         from_accounts = [account.lower() for account in re.findall(r'from:(\w+)', query)]
-        # Matches accounts to which tweets are directed (converted to lower case)
         to_accounts = [account.lower() for account in re.findall(r'to:(\w+)', query)]
-        # Matches mentioned accounts (converted to lower case)
         mentioned_accounts = [account.lower() for account in re.findall(r'@(\w+)', query)]
 
-        # Extract all words outside of OR blocks and account/hashtag/mention patterns
-        all_words = re.findall(r'\b\w+\b', re.sub(r'\(.*?\)|[#@]\w+|from:\w+|to:\w+', '', query))  # Matches words outside parentheses and special patterns
-
-        # Process exclude_keywords by stripping the '-' and making it a simple word list
-        exclude_keywords = [word[1:] for word in exclude_keywords]  # Strip the '-' for NOT keywords
+        all_words = re.findall(r'\b\w+\b', re.sub(r'\(.*?\)|[#@]\w+|from:\w+|to:\w+|-\"[^\"]+\"|-\w+', '', query))
 
         operator_structure = {
-            'all_words': [],
-            'exact_phrases': [],
-            'any_of_these_words': [],
-            'none_of_these_words': [],
-            'hashtags': [],
-            'from_accounts': [],
-            'to_accounts': [],
-            'mentioning_accounts': []
+            'all_words': [word for word in all_words if word not in exclude_keywords],
+            'exact_phrases': [phrase for phrase in exact_phrases if phrase not in exclude_keywords],
+            'any_of_these_words': [
+                keyword.strip() for block in or_blocks for keyword in block.split(' OR ') 
+                if keyword.strip() not in exclude_keywords
+            ],
+            'none_of_these_words': exclude_keywords,
+            'hashtags': hashtags,
+            'from_accounts': from_accounts,
+            'to_accounts': to_accounts,
+            'mentioning_accounts': mentioned_accounts
         }
-
-        # Process keywords and operators
-        operator_structure['exact_phrases'] = exact_phrases
-        # Remove exclude_keywords from all_words
-        operator_structure['all_words'] = [word for word in all_words if word not in exclude_keywords]
-        # Process OR blocks, then remove any excluded keywords from the result
-        operator_structure['any_of_these_words'] = [
-            keyword.strip() for block in or_blocks for keyword in block.split(' OR ') 
-            if keyword.strip() not in exclude_keywords 
-            and not re.match(r'(from:|to:|@)\w+', keyword.strip())  # Ensure no account-related terms are included
-        ]
-        operator_structure['none_of_these_words'] = exclude_keywords  # Already stripped '-'
-        operator_structure['hashtags'] = hashtags
-        operator_structure['from_accounts'] = from_accounts
-        operator_structure['to_accounts'] = to_accounts
-        operator_structure['mentioning_accounts'] = mentioned_accounts
 
         return operator_structure
 
