@@ -7,6 +7,7 @@ from contextlib import aclosing
 from asgiref.wsgi import WsgiToAsgi
 from twitter_search_validator import TwitterSearchValidator
 import json
+from datetime import date, timedelta
 
 api = API()
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def hello_scrape():
 async def twitter_keyword():
     keyword_qry = str(request.args.get('query'))
     threshold = 1
-    today = str(date.today())
+    today = str(date.today() - timedelta(days=7))
     # today = str(date(2024, 8, 2))
     if int(request.args.get('threshold')) >= threshold :
         threshold = int(request.args.get('threshold'))
