@@ -31,7 +31,7 @@ async def twitter_keyword():
     async def exec(scraper):
         tweet_count = 0
 
-        async with aclosing(api.search(scraper, limit=5)) as gen:
+        async with aclosing(api.search(scraper, limit=20)) as gen:
             async for tweet in gen:
                 tweet_count += 1
                 data_set = {
@@ -48,7 +48,7 @@ async def twitter_keyword():
                     'mentions': [user.username for user in tweet.mentionedUsers]
                 }
                 tweets.append(data_set)
-                if tweet_count > 4:
+                if tweet_count > 19:
                     break
 
     await exec(scraper)
