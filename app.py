@@ -16,127 +16,127 @@ app = Flask(__name__)
 def hello_scrape():
     return 'MARQ adsi twitter-scraper'
 
-@app.route('/keywords/', methods=['GET'], strict_slashes=False)
-def twitter_keyword():
-    data = [
-        {
-            "content": " Testing Duplicate Content",
-            "date": "Thu, 23 Jan 2025 14:49:29 GMT",
-            "id": 1876279930482557418,
-            "inReplyToUsername": None,
-            "like_count": 341,
-            "media": {
-                "animated": [
-                    {
-                        "thumbnailUrl": "https://pbs.twimg.com/tweet_video_thumb/GgniplRbEAAT5rf.jpg",
-                        "videoUrl": "https://video.twimg.com/tweet_video/GgniplRbEAAT5rf.mp4"
-                    }
-                ],
-                "photos": [],
-                "videos": []
-            },
-            "mentions": [],
-            "retweet_count": 37,
-            "url": "https://x.com/BitcoinTech5/status/1876279930482557418",
-            "user": "Foxx🦊ビットコイン投資家",
-            "username": "TESTDUPUSER2"
-        },
-        {
-            "content": " Testing Duplicate Content",
-            "date": "Thu, 23 Jan 2025 14:49:29 GMT",
-            "id": 1876279930482557419,
-            "inReplyToUsername": None,
-            "like_count": 341,
-            "media": {
-                "animated": [
-                    {
-                        "thumbnailUrl": "https://pbs.twimg.com/tweet_video_thumb/GgniplRbEAAT5rf.jpg",
-                        "videoUrl": "https://video.twimg.com/tweet_video/GgniplRbEAAT5rf.mp4"
-                    }
-                ],
-                "photos": [],
-                "videos": []
-            },
-            "mentions": [],
-            "retweet_count": 37,
-            "url": "https://x.com/BitcoinTech5/status/1876279930482557418",
-            "user": "Foxx🦊ビットコイン投資家",
-            "username": "TESTDUPUSER1"
-        },
-        {
-            "content": " Testing Duplicate Content",
-            "date": "Thu, 23 Jan 2025 14:49:29 GMT",
-            "id": 1876279930482557420,
-            "inReplyToUsername": None,
-            "like_count": 341,
-            "media": {
-                "animated": [
-                    {
-                        "thumbnailUrl": "https://pbs.twimg.com/tweet_video_thumb/GgniplRbEAAT5rf.jpg",
-                        "videoUrl": "https://video.twimg.com/tweet_video/GgniplRbEAAT5rf.mp4"
-                    }
-                ],
-                "photos": [],
-                "videos": []
-            },
-            "mentions": [],
-            "retweet_count": 37,
-            "url": "https://x.com/BitcoinTech5/status/1876279930482557418",
-            "user": "Foxx🦊ビットコイン投資家",
-            "username": "TESTDUPUSER"
-        }
-    ]
-    return jsonify(data)
-
 # @app.route('/keywords/', methods=['GET'], strict_slashes=False)
-# async def twitter_keyword():
-#     keyword_qry = str(request.args.get('query'))
-#     threshold = 1
-#     today = str(date.today() - timedelta(days=7))
-#     # today = str(date(2024, 8, 2))
-#     if int(request.args.get('threshold')) >= threshold :
-#         threshold = int(request.args.get('threshold'))
+# def twitter_keyword():
+#     data = [
+#         {
+#             "content": " Testing Duplicate Content",
+#             "date": "Thu, 23 Jan 2025 14:49:29 GMT",
+#             "id": 1876279930482557418,
+#             "inReplyToUsername": None,
+#             "like_count": 341,
+#             "media": {
+#                 "animated": [
+#                     {
+#                         "thumbnailUrl": "https://pbs.twimg.com/tweet_video_thumb/GgniplRbEAAT5rf.jpg",
+#                         "videoUrl": "https://video.twimg.com/tweet_video/GgniplRbEAAT5rf.mp4"
+#                     }
+#                 ],
+#                 "photos": [],
+#                 "videos": []
+#             },
+#             "mentions": [],
+#             "retweet_count": 37,
+#             "url": "https://x.com/BitcoinTech5/status/1876279930482557418",
+#             "user": "Foxx🦊ビットコイン投資家",
+#             "username": "TESTDUPUSER2"
+#         },
+#         {
+#             "content": " Testing Duplicate Content",
+#             "date": "Thu, 23 Jan 2025 14:49:29 GMT",
+#             "id": 1876279930482557419,
+#             "inReplyToUsername": None,
+#             "like_count": 341,
+#             "media": {
+#                 "animated": [
+#                     {
+#                         "thumbnailUrl": "https://pbs.twimg.com/tweet_video_thumb/GgniplRbEAAT5rf.jpg",
+#                         "videoUrl": "https://video.twimg.com/tweet_video/GgniplRbEAAT5rf.mp4"
+#                     }
+#                 ],
+#                 "photos": [],
+#                 "videos": []
+#             },
+#             "mentions": [],
+#             "retweet_count": 37,
+#             "url": "https://x.com/BitcoinTech5/status/1876279930482557418",
+#             "user": "Foxx🦊ビットコイン投資家",
+#             "username": "TESTDUPUSER1"
+#         },
+#         {
+#             "content": " Testing Duplicate Content",
+#             "date": "Thu, 23 Jan 2025 14:49:29 GMT",
+#             "id": 1876279930482557420,
+#             "inReplyToUsername": None,
+#             "like_count": 341,
+#             "media": {
+#                 "animated": [
+#                     {
+#                         "thumbnailUrl": "https://pbs.twimg.com/tweet_video_thumb/GgniplRbEAAT5rf.jpg",
+#                         "videoUrl": "https://video.twimg.com/tweet_video/GgniplRbEAAT5rf.mp4"
+#                     }
+#                 ],
+#                 "photos": [],
+#                 "videos": []
+#             },
+#             "mentions": [],
+#             "retweet_count": 37,
+#             "url": "https://x.com/BitcoinTech5/status/1876279930482557418",
+#             "user": "Foxx🦊ビットコイン投資家",
+#             "username": "TESTDUPUSER"
+#         }
+#     ]
+#     return jsonify(data)
 
-#     tweets = []
-#     scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja since:{today}'
-#     # scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja'
+@app.route('/keywords/', methods=['GET'], strict_slashes=False)
+async def twitter_keyword():
+    keyword_qry = str(request.args.get('query'))
+    threshold = 1
+    today = str(date.today() - timedelta(days=7))
+    # today = str(date(2024, 8, 2))
+    if int(request.args.get('threshold')) >= threshold :
+        threshold = int(request.args.get('threshold'))
 
-#     async def exec(scraper):
-#         tweet_count = 0
+    tweets = []
+    scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja since:{today}'
+    # scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja'
 
-#         async with aclosing(api.search(scraper, limit=20)) as gen:
-#             async for tweet in gen:
-#                 tweet_count += 1
-#                 data_set = {
-#                     'id': tweet.id,
-#                     'user': tweet.user.displayname,
-#                     'date': tweet.date,
-#                     'content': tweet.rawContent,
-#                     'url': tweet.url,
-#                     'media': tweet.media,
-#                     'username': tweet.user.username,
-#                     'like_count': tweet.likeCount,
-#                     'retweet_count': tweet.retweetCount,
-#                     'inReplyToUsername': getattr(tweet.inReplyToUser, 'username', None),
-#                     'mentions': [user.username for user in tweet.mentionedUsers]
-#                 }
-#                 tweets.append(data_set)
-#                 if tweet_count > 19:
-#                     break
+    async def exec(scraper):
+        tweet_count = 0
 
-#     await exec(scraper)
+        async with aclosing(api.search(scraper, limit=20)) as gen:
+            async for tweet in gen:
+                tweet_count += 1
+                data_set = {
+                    'id': tweet.id,
+                    'user': tweet.user.displayname,
+                    'date': tweet.date,
+                    'content': tweet.rawContent,
+                    'url': tweet.url,
+                    'media': tweet.media,
+                    'username': tweet.user.username,
+                    'like_count': tweet.likeCount,
+                    'retweet_count': tweet.retweetCount,
+                    'inReplyToUsername': getattr(tweet.inReplyToUser, 'username', None),
+                    'mentions': [user.username for user in tweet.mentionedUsers]
+                }
+                tweets.append(data_set)
+                if tweet_count > 19:
+                    break
 
-#     validator = TwitterSearchValidator(keyword_qry)
+    await exec(scraper)
 
-#     valid_posts = []
+    validator = TwitterSearchValidator(keyword_qry)
 
-#     for post in tweets:
-#         is_valid = validator.validate_post(post)
+    valid_posts = []
+
+    for post in tweets:
+        is_valid = validator.validate_post(post)
         
-#         if is_valid:
-#             valid_posts.append(post)
+        if is_valid:
+            valid_posts.append(post)
 
-#     return jsonify(valid_posts)
+    return jsonify(valid_posts)
 
 @app.route('/search/', methods=['GET'], strict_slashes=False)
 async def twitter_search():
