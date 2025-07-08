@@ -130,7 +130,7 @@ async def twitter_keyword():
 
     await exec(scraper)
 
-    validator = TwitterSearchValidator(keyword_qry)
+    validator = TwitterSearchValidator(sanitized_keyword)
 
     valid_posts = []
 
