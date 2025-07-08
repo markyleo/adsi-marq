@@ -8,6 +8,7 @@ from asgiref.wsgi import WsgiToAsgi
 from twitter_search_validator import TwitterSearchValidator
 import json
 from datetime import date, timedelta
+import re
 
 api = API()
 app = Flask(__name__)
@@ -97,8 +98,11 @@ async def twitter_keyword():
     if int(request.args.get('threshold')) >= threshold :
         threshold = int(request.args.get('threshold'))
 
+    sanitized_keyword = clean_or_query(keyword_qry)
+    print(sanitized_keyword)
+
     tweets = []
-    scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja since:{today}'
+    scraper = f'{sanitized_keyword} min_retweets:{threshold} lang:ja since:{today}'
     # scraper = f'{keyword_qry} min_retweets:{threshold} lang:ja'
 
     async def exec(scraper):
@@ -154,6 +158,16 @@ async def twitter_search():
     await exec()
 
     return jsonify(tweet)
+
+def clean_or_query(input_string):
+    def remove_quotes_in_group(match):
+        # match.group(1) contains the inside of the parenthesis
+        terms = match.group(1).split('OR')
+        cleaned_terms = [term.strip().strip('"') for term in terms]
+        return '(' + ' OR '.join(cleaned_terms) + ')'
+
+    # Replace all (...) groups one by one
+    return re.sub(r'\(([^()]+)\)', remove_quotes_in_group, input_string)
 
 asgi_app = WsgiToAsgi(app)
 
